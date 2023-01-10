@@ -1,5 +1,11 @@
 public class Main {
+
+    public Main(){
+
+    }
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Main main = new Main();
+        JframeLayout jf = new JframeLayout();
+
     }
 }
