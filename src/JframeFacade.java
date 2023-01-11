@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class JframeLayout extends JPanel implements ActionListener {
+public class JframeFacade extends JPanel implements ActionListener {
 
     private JButton enterButton1 = new JButton("Enter");
 
@@ -46,7 +46,7 @@ public class JframeLayout extends JPanel implements ActionListener {
     DiceLogic dl = new DiceLogic();
 
 
-    public JframeLayout() {
+    public JframeFacade() {
         StartMeny();
 
     }

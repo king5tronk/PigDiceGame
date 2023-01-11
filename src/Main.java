@@ -5,7 +5,7 @@ public class Main {
     }
     public static void main(String[] args) {
         Main main = new Main();
-        JframeLayout jf = new JframeLayout();
+        JframeFacade jf = new JframeFacade();
 
     }
 }
