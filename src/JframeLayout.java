@@ -1,19 +1,23 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class JframeLayout extends JPanel implements ActionListener {
 
     private JButton enterButton1 = new JButton("Enter");
 
     private JPanel avatarContainer = new JPanel();
+    private JLabel scoreTrackerPlayer1 = new JLabel("");
+    private JPanel scoreP1Panel = new JPanel();
+    private JLabel scoreTrackerPlayer2 = new JLabel("");
+    private JPanel scoreP2Panel = new JPanel();
     private JPanel lifeContainerPlayer1 = new JPanel();
+    private JPanel diceContainer = new JPanel();
     private JPanel lifeContainerPlayer2 = new JPanel();
     private JButton gameRulesButton = new JButton("Fortsätt");
+    private JButton takePointsPlayer1 = new JButton("stanna!");
+    private JButton takePointsPlayer2 = new JButton("stanna!");
 
     private JButton avatar1Button = new JButton(new ImageIcon("src/tigerAvatar.png"));
     private JButton heartPNG1Player1 = new JButton(new ImageIcon("src/heartPNG.png"));
@@ -27,6 +31,7 @@ public class JframeLayout extends JPanel implements ActionListener {
     private JButton avatar4Button = new JButton(new ImageIcon("src/avatarPicSquir.png"));
     private JButton avatar5Button = new JButton(new ImageIcon("src/avatarRacoPic.png"));
     private JButton avatar6Button = new JButton(new ImageIcon("src/avatarPicEle.png"));
+    private JButton diceButton = new JButton(new ImageIcon("src/dice1.png"));
 
     private JButton avatarTextPlayer1 = new JButton(new ImageIcon("src/chooseAvatarPlayerOneText.jpg"));
     private JButton avatarTextPlayer2 = new JButton(new ImageIcon("src/chooseAvatarPlayerTwoText.jpg"));
@@ -37,11 +42,11 @@ public class JframeLayout extends JPanel implements ActionListener {
     String test = userName1TextField.getText();
     private String player1Avatar = "";
     private String player2Avatar = "";
-    private int spelareEttEllerTvå = 0;
+     int spelareEttEllerTvå = 0;
+    DiceLogic dl = new DiceLogic();
 
 
     public JframeLayout() {
-
         StartMeny();
 
     }
@@ -54,12 +59,12 @@ public class JframeLayout extends JPanel implements ActionListener {
             spelareEttEllerTvå = 2;
             switch (player1Avatar) {
                 case "TIGER":
-                    frame.add(avatar1Button);
                     avatar1Button.setBounds(150,150,200,300);
                     avatar1Button.setEnabled(true);
                     avatar1Button.setOpaque(false);
                     avatar1Button.setBorderPainted(false);
                     avatar1Button.removeActionListener(this);
+                    frame.add(avatar1Button);
                     break;
                 case "FOX":
                     frame.add(avatar2Button);
@@ -183,10 +188,32 @@ public class JframeLayout extends JPanel implements ActionListener {
         lifeContainerPlayer2.setBounds(580,480,300,80);
 
         gameRulesButton.setBounds(500,500,100,100);
+        diceContainer.setBounds(430, 250, 120, 120);
+        frame.add(diceContainer);
+        diceContainer.add(diceButton);
+        diceButton.addActionListener(this);
+        scoreP1Panel.setBounds(445,130,100,100);
+        scoreTrackerPlayer1.setFont(new Font(Font.SERIF, Font.BOLD, 70));
+        scoreTrackerPlayer1.setText("0");
+        scoreP1Panel.add(scoreTrackerPlayer1);
+        frame.add(scoreP1Panel);
+        scoreP2Panel.setBounds(445,385,100,100);
+        scoreTrackerPlayer2.setFont(new Font(Font.SERIF, Font.BOLD, 70));
+        scoreTrackerPlayer2.setText("0");
+        scoreP2Panel.add(scoreTrackerPlayer2);
+        frame.add(scoreP2Panel);
+        takePointsPlayer1.setBounds(350, 290, 80, 50);
+        frame.add(takePointsPlayer1);
+        takePointsPlayer1.addActionListener(this);
+        takePointsPlayer2.setBounds(550, 290, 80, 50);
+        frame.add(takePointsPlayer2);
+        takePointsPlayer2.addActionListener(this);
+        takePointsPlayer2.setVisible(false);
+        spelareEttEllerTvå = 1;
         frame.remove(avatarTextPlayer2);
-        frame.revalidate();
         frame.validate();
         frame.repaint();
+        frame.revalidate();
         frame.pack();
     }
     public void chooseAvatar(){
@@ -254,7 +281,7 @@ public class JframeLayout extends JPanel implements ActionListener {
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {    //HÄR ÄR ALLA ACTION LISTENERS
         try {
 
                 if (e.getSource() == enterButton1) {
@@ -363,10 +390,33 @@ public class JframeLayout extends JPanel implements ActionListener {
                 frame.add(avatarTextPlayer2).setBounds(370,40,310,100);
                 frame.repaint();
             }
-            if (e.getSource() == gameRulesButton){
+            if (e.getSource() == gameRulesButton){     //Knapp för att visa spelregler
                 mainGame();
             }
-        } catch (Exception ex) {
+            if (e.getSource() == diceButton){          //Knapp för att slå tärningen
+                if (spelareEttEllerTvå == 1) {
+                    dl.rollDicePlayer1(takePointsPlayer1, heartPNG1Player1, heartPNG2Player1, heartPNG3Player1);
+                    dl.getSumPlayer1(scoreTrackerPlayer1);
+                    frame.repaint();
+                }
+                else {
+                    dl.rollDicePlayer2(takePointsPlayer2, heartPNG1Player2, heartPNG2Player2, heartPNG3Player2);
+                    dl.getSumPlayer2(scoreTrackerPlayer2);
+                    frame.repaint();
+                }
+            }
+            if (e.getSource() == takePointsPlayer1){   //Knappen för att ta poäng och ge turen till motståndare 2
+                spelareEttEllerTvå = 2;
+                takePointsPlayer1.setVisible(false);
+                takePointsPlayer2.setVisible(true);
+            }
+            if (e.getSource() == takePointsPlayer2){   //Knappen för att ta poäng och ge turen till motståndare 1
+                spelareEttEllerTvå = 1;
+                takePointsPlayer2.setVisible(false);
+                takePointsPlayer1.setVisible(true);
+            }
+
+            } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
