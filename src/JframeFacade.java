@@ -37,6 +37,8 @@ public class JframeFacade extends JPanel implements ActionListener {
     private JButton avatarTextPlayer2 = new JButton(new ImageIcon("src/chooseAvatarPlayerTwoText.jpg"));
     private JTextField userName1TextField = new JTextField(10);
     private JTextField userName2TextField = new JTextField(10);
+    Player playerOne = new Player("playerOneName", 0);
+    Player playerTwo = new Player("playerTwoName", 0);
     private JFrame frame = new JFrame("Dice Pig Game");
     private JPanel jpStartMeny;
     String test = userName1TextField.getText();
@@ -287,8 +289,10 @@ public class JframeFacade extends JPanel implements ActionListener {
                 if (e.getSource() == enterButton1) {
                     String playerOneName = userName1TextField.getText();
                     String playerTwoName = userName2TextField.getText();
-                    Player playerOne = new Player(playerOneName, 0);
-                    Player playerTwo = new Player(playerTwoName, 0);
+                    playerOne.setName(playerOneName);
+                    playerTwo.setName(playerTwoName);
+                    //Player playerOne = new Player(playerOneName, 0);
+                    //Player playerTwo = new Player(playerTwoName, 0);
                     System.out.println(playerOne);
                     System.out.println(playerTwo);
                     frame.remove(userName1TextField);
@@ -396,12 +400,12 @@ public class JframeFacade extends JPanel implements ActionListener {
             if (e.getSource() == diceButton){          //Knapp för att slå tärningen
                 if (spelareEttEllerTvå == 1) {
                     dl.rollDicePlayer1(takePointsPlayer1, heartPNG1Player1, heartPNG2Player1, heartPNG3Player1);
-                    dl.getSumPlayer1(scoreTrackerPlayer1);
+                    dl.getSumPlayer1(scoreTrackerPlayer1, playerOne);
                     frame.repaint();
                 }
                 else {
                     dl.rollDicePlayer2(takePointsPlayer2, heartPNG1Player2, heartPNG2Player2, heartPNG3Player2);
-                    dl.getSumPlayer2(scoreTrackerPlayer2);
+                    dl.getSumPlayer2(scoreTrackerPlayer2, playerTwo);
                     frame.repaint();
                 }
             }

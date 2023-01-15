@@ -17,12 +17,13 @@ public class DiceLogic{
     //TODO TIMER PÅ 30 SEK ANNARS FÖRLORAR SPELARE MED LÄGST POÄNG ETT LIV
 
 //METODER FÖR SPELARE 1
-     public void rollDicePlayer1(JButton takePointsPlayer1, JButton lives1, JButton lives2, JButton lives3 ){
+     public void rollDicePlayer1(JButton takePointsPlayer1, JButton lives1, JButton lives2, JButton lives3){
          int dice = rand.nextInt(6) + 1;
          if (dice == 1) {
              listOfScorePlayer1.clear();
              takePointsPlayer1.doClick();
              livesTrackerPlayer1++;
+             System.out.println("Spelare ett förlorade ett liv");
              if (livesTrackerPlayer1 == 1){
                  lives1.setVisible(false);
              }
@@ -39,12 +40,13 @@ public class DiceLogic{
          }
          }
 
-    public void getSumPlayer1(JLabel scoreTrackerPlayer1){
+    public void getSumPlayer1(JLabel scoreTrackerPlayer1, Player player1){
         int sum = 0;
         for (int i : listOfScorePlayer1) {
             sum += i;
         }
         scoreTrackerPlayer1.setText(String.valueOf(sum));
+        player1.setScore(Integer.parseInt(String.valueOf(sum)));
     }
 
     // METODER FÖR SPELARE 2
@@ -54,6 +56,7 @@ public class DiceLogic{
             listOfScorePlayer2.clear();
             takePointsPlayer2.doClick();
             livesTrackerPlayer2++;
+            System.out.println("Spelare två förlorade ett liv");
             if (livesTrackerPlayer2 == 1){
                 lives1.setVisible(false);
             }
@@ -70,11 +73,12 @@ public class DiceLogic{
         }
     }
 
-    public void getSumPlayer2(JLabel scoreTrackerPlayer2){
+    public void getSumPlayer2(JLabel scoreTrackerPlayer2, Player player2){
         int sum = 0;
         for (int i : listOfScorePlayer2) {
             sum += i;
         }
         scoreTrackerPlayer2.setText(String.valueOf(sum));
+        player2.setScore(Integer.parseInt(String.valueOf(sum)));
     }
 }
